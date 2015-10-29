@@ -3,7 +3,6 @@ import sys
 filename = sys.argv[1]
 #http://bytes.com/topic/python/answers/649282-how-add-extension-input-filename
 output = filename + ".mkv"
-final = output + ".mkv"
 fmd5 = filename + ".framemd5"
 fmd5ffv1 = output + ".framemd5"
 print filename
