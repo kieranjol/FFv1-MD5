@@ -13,7 +13,8 @@ subprocess.call(['ffmpeg','-i', filename, '-c:v', 'ffv1','-g','1','-level','3', 
 subprocess.call(['ffmpeg','-i', output, '-f','framemd5','-an', fmd5ffv1 ])
 print fmd5
 print fmd5ffv1
-if filecmp.cmp(fmd5, fmd5ffv1, shallow=False):
+#http://bioportal.weizmann.ac.il/course/python/PyMOTW/PyMOTW/docs/filecmp/index.html and https://docs.python.org/2/library/filecmp.html
+if filecmp.cmp(fmd5, fmd5ffv1, shallow=False): 
 	print "YOUR FILES ARE LOSSLESS YOU SHOULD BE SO HAPPY!!!"
 else:
 	print "YOUR CHECKSUMS DO NOT MATCH, BACK TO THE DRAWING BOARD!!!"
