@@ -28,16 +28,17 @@ for filename in filelist:
 		print "YOUR FILES ARE LOSSLESS YOU SHOULD BE SO HAPPY!!!"
 	else:
 		print "YOUR CHECKSUMS DO NOT MATCH, BACK TO THE DRAWING BOARD!!!"
+		sys.exit()
 
 
 	#http://www.tutorialspoint.com/python/python_files_io.htm
 	fo = open(inputxml, "w+")
-	mediaxmlinput = subprocess.check_output(['mediainfo','-f','--language=raw','--output=XML', 	filename ])
+	mediaxmlinput = subprocess.check_output(['mediainfo','-f','--language=raw','--output=XML', filename ])
 	fo.write(mediaxmlinput)
 	fo.close
 
 	fo = open(outputxml, "w+")
-	mediaxmloutput = subprocess.check_output(['mediainfo','-f','--language=raw','--output=XML', 	output ])
+	mediaxmloutput = subprocess.check_output(['mediainfo','-f','--language=raw','--output=XML', output ])
 	fo.write(mediaxmloutput)
 	fo.close
 
