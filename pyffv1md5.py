@@ -7,11 +7,11 @@ import os
 wd = os.path.dirname(os.path.realpath(sys.argv[1]))
 os.chdir(wd)
 filelist =  glob.glob('*.mp4')
-
+filename = sys.argv[1]
 for filename in filelist:
 
 
-	filename = sys.argv[1]
+	
 	inputxml = filename + ".xml"
 	#http://bytes.com/topic/python/answers/649282-how-add-extension-input-filename
 	output = filename + ".mkv"
