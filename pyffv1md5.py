@@ -21,8 +21,19 @@ for filename in filelist:
 	fmd5 = filename + ".framemd5"
 	fmd5ffv1 = output + ".framemd5"
 
-	subprocess.call(['ffmpeg','-i', filename, '-c:v', 'ffv1','-g','1','-level','3', '-c:a','copy', 	output, '-f','framemd5','-an', fmd5 ])
-	subprocess.call(['ffmpeg','-i', output, '-f','framemd5','-an', fmd5ffv1 ])
+	subprocess.call(['ffmpeg',
+					'-i', filename, 
+					'-c:v', 'ffv1',
+					'-g','1',
+					'-level','3',
+					'-c:a','copy',
+					output,
+					'-f','framemd5','-an'
+					, fmd5 ])
+	subprocess.call(['ffmpeg',
+					'-i',output,
+					'-f','framemd5','-an',
+					fmd5ffv1 ])
 	
 	if filecmp.cmp(fmd5, fmd5ffv1, shallow=False):
 		print "YOUR FILES ARE LOSSLESS YOU SHOULD BE SO HAPPY!!!"
@@ -43,4 +54,3 @@ for filename in filelist:
 	fo.close
 
 		
-
