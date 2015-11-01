@@ -22,18 +22,18 @@ for filename in filelist:
 	fmd5ffv1 = output + ".framemd5"
 
 	subprocess.call(['ffmpeg',
-					'-i', filename, 
-					'-c:v', 'ffv1',
-					'-g','1',
-					'-level','3',
-					'-c:a','copy',
-					output,
-					'-f','framemd5','-an'
-					, fmd5 ])
+			'-i', filename, 
+			'-c:v', 'ffv1',
+			'-g','1',
+			'-level','3',
+			'-c:a','copy',
+			output,
+			'-f','framemd5','-an'
+			, fmd5 ])
 	subprocess.call(['ffmpeg',
-					'-i',output,
-					'-f','framemd5','-an',
-					fmd5ffv1 ])
+			'-i',output,
+			'-f','framemd5','-an',
+			fmd5ffv1 ])
 	
 	if filecmp.cmp(fmd5, fmd5ffv1, shallow=False):
 		print "YOUR FILES ARE LOSSLESS YOU SHOULD BE SO HAPPY!!!"
@@ -44,12 +44,20 @@ for filename in filelist:
 
 	#http://www.tutorialspoint.com/python/python_files_io.htm
 	fo = open(inputxml, "w+")
-	mediaxmlinput = subprocess.check_output(['mediainfo','-f','--language=raw','--output=XML', filename ])
+	mediaxmlinput = subprocess.check_output(['mediainfo',
+						'-f',
+						'--language=raw',
+						'--output=XML',
+						filename ])
 	fo.write(mediaxmlinput)
 	fo.close
 
 	fo = open(outputxml, "w+")
-	mediaxmloutput = subprocess.check_output(['mediainfo','-f','--language=raw','--output=XML', output ])
+	mediaxmloutput = subprocess.check_output(['mediainfo',
+						'-f',
+						'--language=raw',
+						'--output=XML',
+						output ])
 	fo.write(mediaxmloutput)
 	fo.close
 
