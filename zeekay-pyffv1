@@ -1,0 +1,60 @@
+import subprocess
+import sys
+import filecmp
+import os
+import xml.etree.ElementTree as ET
+from glob import glob
+
+# Directory with files that we want to transcode losslessly and generate metadata for
+video_dir = sys.argv[1]
+
+# Change directory to directory with video files
+wd = os.path.realpath(video_dir)
+os.chdir(wd)
+
+# Find all video files to transcode
+video_files =  glob('*.mov') + glob('*.mp4')
+
+for filename in video_files:
+
+	inputxml  = filename + ".xml"	
+	output    = filename + ".mkv"
+	outputxml = output + ".xml"
+	fmd5      = filename + ".framemd5"
+	fmd5ffv1  = output + ".framemd5"
+
+	# Transcode video file writing frame md5 and output appropriately
+	# subprocess.call(['ffmpeg',
+			# '-i', filename, 
+			# '-c:v', 'ffv1',
+			# '-g','1',
+			# '-level','3',
+			# '-c:a','copy',
+			# output,
+			# '-f','framemd5','-an'
+			# , fmd5 ])
+
+	# Write metadata for original video file - with open will auto close the file.
+	with open(inputxml, "w+") as fo:
+		mediaxmlinput = subprocess.check_output(['mediainfo',
+							'-f',
+							'--language=raw',
+							'--output=XML',
+							filename ])
+		fo.write(mediaxmlinput)
+
+	# Write metadata for output video file
+	with open(outputxml, "w+") as fo:
+		mediaxmloutput = subprocess.check_output(['mediainfo',
+							'-f',
+							'--language=raw',
+							'--output=XML',
+							output ])
+		fo.write(mediaxmloutput)
+	
+	
+	newin = outputxml + ".xml"
+	root = ET.fromstring(mediaxmlinput)
+	vcodec = root.findtext(".//track[@type='Video']/Codec")
+
+	print '<inm:V-Codec>%s</inm:V-codec>'  % vcodec
