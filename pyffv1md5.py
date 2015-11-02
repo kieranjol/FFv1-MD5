@@ -31,14 +31,14 @@ for filename in video_files: #Begin a loop for all .mov and .mp4 files.
 
 	subprocess.call(['ffmpeg',
 			'-i', filename, 
-			'-c:v', 'ffv1', 		# Use FFv1 codec
-			'-g','1',			# Use intra-frame only aka ALL-I aka GOP=1
-			'-level','3',			# Use Version 3 of FFv1
-			'-c:a','copy',			# Copy and paste audio bitsream with no transcoding
+			'-c:v', 'ffv1',        # Use FFv1 codec
+			'-g','1',              # Use intra-frame only aka ALL-I aka GOP=1
+			'-level','3',          # Use Version 3 of FFv1
+			'-c:a','copy',         # Copy and paste audio bitsream with no transcoding
 			output,	
-			'-f','framemd5','-an'		# Create decoded md5 checksums for every frame of the input. -an ignores audio
+			'-f','framemd5','-an'  # Create decoded md5 checksums for every frame of the input. -an ignores audio
 			, fmd5 ])
-	subprocess.call(['ffmpeg',			# Create decoded md5 checksums for every frame of the ffv1 output
+	subprocess.call(['ffmpeg',     # Create decoded md5 checksums for every frame of the ffv1 output
 			'-i',output,
 			'-f','framemd5','-an',
 			fmd5ffv1 ])
@@ -48,7 +48,7 @@ for filename in video_files: #Begin a loop for all .mov and .mp4 files.
 		print "YOUR FILES ARE LOSSLESS YOU SHOULD BE SO HAPPY!!!"
 	else:
 		print "YOUR CHECKSUMS DO NOT MATCH, BACK TO THE DRAWING BOARD!!!"
-		sys.exit()				# Script will exit the loop if transcode is not lossless.
+		sys.exit()                 # Script will exit the loop if transcode is not lossless.
 
 
 	# Write metadata for original video file - with open will auto close the file.
