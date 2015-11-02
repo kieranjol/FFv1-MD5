@@ -1,4 +1,4 @@
-#Written by Kieran O'Leary, with a major review and overhaul/cleanup by Zach Kelling aka @Zeekay
+# Written by Kieran O'Leary, with a major review and overhaul/cleanup by Zach Kelling aka @Zeekay
 
 import subprocess
 import sys
