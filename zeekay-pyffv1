@@ -1,19 +1,19 @@
-import subprocess
-import sys
-import filecmp
-import os
-import xml.etree.ElementTree as ET
-from glob import glob
+#import subprocess
+#import sys
+#import filecmp
+#import os
+#import xml.etree.ElementTree as ET
+#from glob import glob
 
 # Directory with files that we want to transcode losslessly and generate metadata for
-video_dir = sys.argv[1]
+#video_dir = sys.argv[1]
 
 # Change directory to directory with video files
-wd = os.path.realpath(video_dir)
-os.chdir(wd)
+#wd = os.path.realpath(video_dir)
+#os.chdir(wd)
 
 # Find all video files to transcode
-video_files =  glob('*.mov') + glob('*.mp4')
+#video_files =  glob('*.mov') + glob('*.mp4')
 
 for filename in video_files:
 
