@@ -70,6 +70,7 @@ for filename in video_files: #Begin a loop for all .mov and .mp4 files.
 							output ])
 		fo.write(mediaxmloutput)
 	
+	# Parse through FFv1 xml and store values as variables to be reused later.
 	inmagicxml = outputxml + ".xml"
 	vcodec = subprocess.check_output(['xml','sel', '-t', '-m',
 					"Mediainfo/File/track[@type='Video']", '-v', 'Codec', 
@@ -100,7 +101,7 @@ for filename in video_files: #Begin a loop for all .mov and .mp4 files.
 
 
 
-
+	#Writes an inmagic DBTextworks compliant xml file usin ght values from the previous section.
 	with open(inmagicxml, "w+") as fo:
 		fo.write('<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>\n')
 		fo.write('<inm:Results productTitle="Inmagic DB/TextWorks for SQL" productVersion="13.00" xmlns:inm="http://www.inmagic.com/webpublisher/query">\n')
