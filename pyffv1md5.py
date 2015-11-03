@@ -57,7 +57,7 @@ for filename in video_files: #Begin a loop for all .mov and .mp4 files.
 							'-f',
 							'--language=raw', # Use verbose output.
 							'--output=XML',
-							filename ])
+							filename ])       #input filename
 		fo.write(mediaxmlinput)
 	
 
@@ -67,7 +67,7 @@ for filename in video_files: #Begin a loop for all .mov and .mp4 files.
 							'-f',
 							'--language=raw',
 							'--output=XML',
-							output ])
+							output ])         #output ffv1 file
 		fo.write(mediaxmloutput)
 	
 	# Parse through FFv1 xml and store values as variables to be reused later.
