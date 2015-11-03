@@ -54,33 +54,49 @@ for filename in video_files: #Begin a loop for all .mov and .mp4 files.
 	# Write metadata for original video file - with open will auto close the file.
 	with open(inputxml, "w+") as fo:
 		mediaxmlinput = subprocess.check_output(['mediainfo',
-						'-f',
-						'--language=raw', # Use verbose output.
-						'--output=XML',
-						filename ])
+							'-f',
+							'--language=raw', # Use verbose output.
+							'--output=XML',
+							filename ])
 		fo.write(mediaxmlinput)
 	
 
 	# Write metadata for output video file
 	with open(outputxml, "w+") as fo:
 		mediaxmloutput = subprocess.check_output(['mediainfo',
-						'-f',
-						'--language=raw',
-						'--output=XML',
-						output ])
+							'-f',
+							'--language=raw',
+							'--output=XML',
+							output ])
 		fo.write(mediaxmloutput)
 	
 	inmagicxml = outputxml + ".xml"
-	vcodec = subprocess.check_output(['xml','sel', '-t', '-m', "Mediainfo/File/track[@type='Video']", '-v', 'Codec', outputxml ])
-	width = subprocess.check_output(['xml','sel', '-t', '-m', "Mediainfo/File/track[@type='Video']", '-v', 'Width', outputxml ])
-	height = subprocess.check_output(['xml','sel', '-t', '-m', "Mediainfo/File/track[@type='Video']", '-v', 'Height', outputxml ])
-	DAR = subprocess.check_output(['xml','sel', '-t', '-m', "Mediainfo/File/track[@type='Video']", '-v', 'DisplayAspectRatio', outputxml ])
+	vcodec = subprocess.check_output(['xml','sel', '-t', '-m',
+					"Mediainfo/File/track[@type='Video']", '-v', 'Codec', 
+					outputxml ])
+	width = subprocess.check_output(['xml','sel', '-t', '-m', 
+					"Mediainfo/File/track[@type='Video']", '-v', 'Width', 
+					outputxml ])
+	height = subprocess.check_output(['xml','sel', '-t', '-m', 
+					"Mediainfo/File/track[@type='Video']", '-v', 'Height',
+					outputxml ])
+	DAR = subprocess.check_output(['xml','sel', '-t', '-m',
+					"Mediainfo/File/track[@type='Video']", '-v', 'DisplayAspectRatio', 
+					outputxml ])
 
-	acodec = subprocess.check_output(['xml','sel', '-t', '-m', "Mediainfo/File/track[@type='Audio']", '-v', 'Codec', outputxml ])
+	acodec = subprocess.check_output(['xml','sel', '-t', '-m', 
+					"Mediainfo/File/track[@type='Audio']", '-v', 'Codec',
+					outputxml ])
 
-	duration = subprocess.check_output(['xml','sel', '-t', '-m', "Mediainfo/File/track[@type='General']", '-v', 'Duration_String4', outputxml ])
-	wrapper = subprocess.check_output(['xml','sel', '-t', '-m', "Mediainfo/File/track[@type='General']", '-v', 'FileExtension', outputxml ])
-	filesize = subprocess.check_output(['xml','sel', '-t', '-m', "Mediainfo/File/track[@type='General']", '-v', 'FileSize_String4', outputxml ])
+	duration = subprocess.check_output(['xml','sel', '-t', '-m',
+					"Mediainfo/File/track[@type='General']", '-v', 'Duration_String4',
+					outputxml ])
+	wrapper = subprocess.check_output(['xml','sel', '-t', '-m',
+					"Mediainfo/File/track[@type='General']", '-v', 'FileExtension',
+					outputxml ])
+	filesize = subprocess.check_output(['xml','sel', '-t', '-m', 
+					"Mediainfo/File/track[@type='General']", '-v', 'FileSize_String4',
+					outputxml ])
 
 
 
