@@ -86,8 +86,8 @@ for filename in video_files: #Begin a loop for all .mov and .mp4 files.
 					outputxml ])
 
 	acodec = subprocess.check_output(['xml','sel', '-t', '-m', 
-					"Mediainfo/File/track[@type='Audio']", '-v', 'Codec',
-					outputxml ])
+					"Mediainfo/File/track[@type='Audio'][1]", '-v', 'Codec', 
+					outputxml ])                             # Only taking info from the first stream for now.
 
 	duration = subprocess.check_output(['xml','sel', '-t', '-m',
 					"Mediainfo/File/track[@type='General']", '-v', 'Duration_String4',
