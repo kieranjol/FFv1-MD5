@@ -22,7 +22,7 @@ for filename in video_files: #Begin a loop for all .mov and .mp4 files.
 
 	# Assigning variable names to the new files we're going to create.
 	inputxml  = filename + ".xml"	
-	output    = filename + ".mkv"
+	output    = os.path.splitext(filename)[0] + ".mkv"
 	outputxml = output + ".xml"
 	fmd5      = filename + ".framemd5"
 	fmd5ffv1  = output + ".framemd5"
@@ -85,9 +85,7 @@ for filename in video_files: #Begin a loop for all .mov and .mp4 files.
 					"Mediainfo/File/track[@type='Video']", '-v', 'DisplayAspectRatio', 
 					outputxml ])
 
-	acodec = subprocess.check_output(['xml','sel', '-t', '-m', 
-					"Mediainfo/File/track[@type='Audio'][1]", '-v', 'Codec', 
-					outputxml ])                             # Only taking info from the first stream for now.
+	acodec = subprocess.check_output(['MediaInfo', '--Language=raw', '--Full', '--inform=Audio;%Codec%', output ])                             # Only taking info from the first stream for now.
 
 	duration = subprocess.check_output(['xml','sel', '-t', '-m',
 					"Mediainfo/File/track[@type='General']", '-v', 'Duration_String4',
