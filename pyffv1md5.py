@@ -19,17 +19,22 @@ video_files =  glob('*.mov') + glob('*.mp4')
 
 
 for filename in video_files: #Begin a loop for all .mov and .mp4 files.
-
-	# Assigning variable names to the new files we're going to create.
-	inputxml  = filename + ".xml"	
-	output    = os.path.splitext(filename)[0] + ".mkv"
-	outputxml = output + ".xml"
-	fmd5      = filename + ".framemd5"
-	fmd5ffv1  = output + ".framemd5"
+    mypath    = wd + "\%s" % os.path.splitext(filename)[0]
+    
+    os.makedirs(mypath)
+    inputxml  = "%s\%s.xml" % (mypath, filename)
+    print inputxml
+    output    = os.path.splitext(filename)[0] + ".mkv"
+    outputxml = "%s\%s.xml" % (mypath, output)
+    fmd5      = filename + ".framemd5"
+    fmd5ffv1  = output + ".framemd5"
+	
+    
+    
 
 	# Transcode video file writing frame md5 and output appropriately
 
-	subprocess.call(['ffmpeg',
+    subprocess.call(['ffmpeg',
 			'-i', filename, 
 			'-c:v', 'ffv1',        # Use FFv1 codec
 			'-g','1',              # Use intra-frame only aka ALL-I aka GOP=1
@@ -38,21 +43,21 @@ for filename in video_files: #Begin a loop for all .mov and .mp4 files.
 			output,	
 			'-f','framemd5','-an'  # Create decoded md5 checksums for every frame of the input. -an ignores audio
 			, fmd5 ])
-	subprocess.call(['ffmpeg',     # Create decoded md5 checksums for every frame of the ffv1 output
+    subprocess.call(['ffmpeg',     # Create decoded md5 checksums for every frame of the ffv1 output
 			'-i',output,
 			'-f','framemd5','-an',
 			fmd5ffv1 ])
 	
 	# Verify that the video really is lossless by comparing the fixity of the two framemd5 files. 
-	if filecmp.cmp(fmd5, fmd5ffv1, shallow=False): 
+    if filecmp.cmp(fmd5, fmd5ffv1, shallow=False): 
 		print "YOUR FILES ARE LOSSLESS YOU SHOULD BE SO HAPPY!!!"
-	else:
+    else:
 		print "YOUR CHECKSUMS DO NOT MATCH, BACK TO THE DRAWING BOARD!!!"
 		sys.exit()                 # Script will exit the loop if transcode is not lossless.
 
 
 	# Write metadata for original video file - with open will auto close the file.
-	with open(inputxml, "w+") as fo:
+    with open(inputxml, "w+") as fo:
 		mediaxmlinput = subprocess.check_output(['mediainfo',
 							'-f',
 							'--language=raw', # Use verbose output.
@@ -62,7 +67,7 @@ for filename in video_files: #Begin a loop for all .mov and .mp4 files.
 	
 
 	# Write metadata for output video file
-	with open(outputxml, "w+") as fo:
+    with open(outputxml, "w+") as fo:
 		mediaxmloutput = subprocess.check_output(['mediainfo',
 							'-f',
 							'--language=raw',
@@ -71,36 +76,36 @@ for filename in video_files: #Begin a loop for all .mov and .mp4 files.
 		fo.write(mediaxmloutput)
 	
 	# Parse through FFv1 xml and store values as variables to be reused later.
-	inmagicxml = outputxml + ".xml"
-	vcodec = subprocess.check_output(['xml','sel', '-t', '-m',
+    inmagicxml = outputxml + ".xml"
+    vcodec = subprocess.check_output(['xml','sel', '-t', '-m',
 					"Mediainfo/File/track[@type='Video']", '-v', 'Codec', 
 					outputxml ])
-	width = subprocess.check_output(['xml','sel', '-t', '-m', 
+    width = subprocess.check_output(['xml','sel', '-t', '-m', 
 					"Mediainfo/File/track[@type='Video']", '-v', 'Width', 
 					outputxml ])
-	height = subprocess.check_output(['xml','sel', '-t', '-m', 
+    height = subprocess.check_output(['xml','sel', '-t', '-m', 
 					"Mediainfo/File/track[@type='Video']", '-v', 'Height',
 					outputxml ])
-	DAR = subprocess.check_output(['xml','sel', '-t', '-m',
+    DAR = subprocess.check_output(['xml','sel', '-t', '-m',
 					"Mediainfo/File/track[@type='Video']", '-v', 'DisplayAspectRatio', 
 					outputxml ])
 
-	acodec = subprocess.check_output(['MediaInfo', '--Language=raw', '--Full', '--inform=Audio;%Codec%', output ])                             # Only taking info from the first stream for now.
+    acodec = subprocess.check_output(['MediaInfo', '--Language=raw', '--Full', '--inform=Audio;%Codec%', output ])                             # Only taking info from the first stream for now.
 
-	duration = subprocess.check_output(['xml','sel', '-t', '-m',
+    duration = subprocess.check_output(['xml','sel', '-t', '-m',
 					"Mediainfo/File/track[@type='General']", '-v', 'Duration_String4',
 					outputxml ])
-	wrapper = subprocess.check_output(['xml','sel', '-t', '-m',
+    wrapper = subprocess.check_output(['xml','sel', '-t', '-m',
 					"Mediainfo/File/track[@type='General']", '-v', 'FileExtension',
 					outputxml ])
-	filesize = subprocess.check_output(['xml','sel', '-t', '-m', 
+    filesize = subprocess.check_output(['xml','sel', '-t', '-m', 
 					"Mediainfo/File/track[@type='General']", '-v', 'FileSize_String4',
 					outputxml ])
 
 
 
 	#Writes an inmagic DBTextworks compliant xml file usin ght values from the previous section.
-	with open(inmagicxml, "w+") as fo:
+    with open(inmagicxml, "w+") as fo:
 		fo.write('<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>\n')
 		fo.write('<inm:Results productTitle="Inmagic DB/TextWorks for SQL" productVersion="13.00" xmlns:inm="http://www.inmagic.com/webpublisher/query">\n')
 		fo.write('<inm:Recordset setCount="1">\n')
