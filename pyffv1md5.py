@@ -19,13 +19,14 @@ video_files =  glob('*.mov') + glob('*.mp4')
 
 
 for filename in video_files: #Begin a loop for all .mov and .mp4 files.
-    mypath    = wd + "\%s" % os.path.splitext(filename)[0]
+    # Create subfolder for new files. Currently this is just for metadata as a placeholder.
+    new_dir   = wd + "\%s" % os.path.splitext(filename)[0]
     
-    os.makedirs(mypath)
-    inputxml  = "%s\%s.xml" % (mypath, filename)
+    os.makedirs(new_dir)
+    inputxml  = "%s\%s.xml" % (new_dir, filename)
     print inputxml
     output    = os.path.splitext(filename)[0] + ".mkv"
-    outputxml = "%s\%s.xml" % (mypath, output)
+    outputxml = "%s\%s.xml" % (new_dir, output)
     fmd5      = filename + ".framemd5"
     fmd5ffv1  = output + ".framemd5"
 	
