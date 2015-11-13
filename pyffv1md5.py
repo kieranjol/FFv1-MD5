@@ -84,21 +84,23 @@ for filename in video_files: #Begin a loop for all .mov and .mp4 files.
     width = subprocess.check_output(['xml','sel', '-t', '-m', 
 					"Mediainfo/File/track[@type='Video']", '-v', 'Width', 
 					outputxml ])
-    height = subprocess.check_output(['xml','sel', '-t', '-m', 
-					"Mediainfo/File/track[@type='Video']", '-v', 'Height',
-					outputxml ])
+    
+    height_raw = subprocess.check_output(['MediaInfo', '--Language=raw', '--Full', '--inform=Video;%Height%', output ])
+    height = height_raw.replace('\n', '')
+    
     DAR = subprocess.check_output(['xml','sel', '-t', '-m',
 					"Mediainfo/File/track[@type='Video']", '-v', 'DisplayAspectRatio', 
 					outputxml ])
 
-    acodec = subprocess.check_output(['MediaInfo', '--Language=raw', '--Full', '--inform=Audio;%Codec%', output ])                             # Only taking info from the first stream for now.
-
-    duration = subprocess.check_output(['xml','sel', '-t', '-m',
-					"Mediainfo/File/track[@type='General']", '-v', 'Duration_String4',
-					outputxml ])
-    wrapper = subprocess.check_output(['xml','sel', '-t', '-m',
-					"Mediainfo/File/track[@type='General']", '-v', 'FileExtension',
-					outputxml ])
+    acodec_raw = subprocess.check_output(['MediaInfo', '--Language=raw', '--Full', '--inform=Audio;%Codec%', output ])                             # Only taking info from the first stream for now.
+    acodec = acodec_raw.replace('\n', '')
+    
+    
+    duration_raw = subprocess.check_output(['MediaInfo', '--Language=raw', '--Full', '--inform=General;%Duration_String4%', output ])
+    duration = duration_raw.replace('\n', '')
+ 
+    wrapper_raw = subprocess.check_output(['MediaInfo', '--Language=raw', '--Full', '--inform=General;%FileExtension%', output ])
+    wrapper = wrapper_raw.replace('\n', '')
     filesize = subprocess.check_output(['xml','sel', '-t', '-m', 
 					"Mediainfo/File/track[@type='General']", '-v', 'FileSize_String4',
 					outputxml ])
@@ -122,7 +124,7 @@ for filename in video_files: #Begin a loop for all .mov and .mp4 files.
 		fo.write('</inm:Record>\n')	
 		fo.write('</inm:Recordset>\n')	
 		fo.write('</inm:Results>\n')	
-			
-		
+    print acodec
+    print height  
 
 		
