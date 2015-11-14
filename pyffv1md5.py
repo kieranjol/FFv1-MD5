@@ -5,9 +5,14 @@ import sys
 import filecmp
 from glob import glob
 import os
+from Tkinter import *
+import tkFileDialog
+root = Tk()
 
+root.update()
+video_dir = tkFileDialog.askopenfilename(parent=root)
 # Directory with files that we want to transcode losslessly and generate metadata for
-video_dir = sys.argv[1]
+
 
 # Change directory to directory with video files
 wd = os.path.dirname(video_dir)
@@ -20,6 +25,8 @@ video_files =  glob('*.mov') + glob('*.mp4')
 
 for filename in video_files: #Begin a loop for all .mov and .mp4 files.
     # Create subfolder for new files. Currently this is just for metadata as a placeholder.
+    # For the love of god, comment these next commands and make them prettier cos they're a mess.
+    print filename
     metadata_dir   = wd + "/%s/metadata" % os.path.splitext(filename)[0]
     data_dir   = wd + "/%s/data" % os.path.splitext(filename)[0]
     provenance_dir   = wd + "/%s/provenance" % os.path.splitext(filename)[0]
@@ -30,7 +37,9 @@ for filename in video_files: #Begin a loop for all .mov and .mp4 files.
     inputxml  = "%s/%s.xml" % (metadata_dir, filename)
     print inputxml
     output    = "%s/%s.mkv" % (data_dir, os.path.splitext(filename)[0])
-    outputxml = "%s/%s.xml" % (metadata_dir, output)
+    outputfilename = os.path.basename(output)
+    print output
+    outputxml = "%s/%s.xml" % (metadata_dir, outputfilename)
     fmd5      = "%s/%s.framemd5" % (provenance_dir, filename)
     fmd5ffv1  = output + ".framemd5"
 	
