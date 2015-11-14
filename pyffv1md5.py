@@ -9,6 +9,7 @@ from Tkinter import *
 import tkFileDialog
 root = Tk()
 
+# Create file-open dialog.
 root.update()
 video_dir = tkFileDialog.askopenfilename(parent=root)
 # Directory with files that we want to transcode losslessly and generate metadata for
@@ -106,7 +107,7 @@ for filename in video_files: #Begin a loop for all .mov and .mp4 files.
     DAR = subprocess.check_output(['xml','sel', '-t', '-m',
 					"Mediainfo/File/track[@type='Video']", '-v', 'DisplayAspectRatio', 
 					outputxml ])
-
+    #Multiple possible values, so newline is used, then only first line is extracted.
     acodec_raw = subprocess.check_output(['MediaInfo', '--Language=raw', '--Full', '--inform=Audio;%Codec%\\n', output ])                             # Only taking info from the first stream for now.
     acodec = acodec_raw.split('\n', 1)[0].replace('\n', '')
     
