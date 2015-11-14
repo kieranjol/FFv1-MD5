@@ -7,8 +7,9 @@ from glob import glob
 import os
 from Tkinter import *
 import tkFileDialog
-root = Tk()
 
+# Create file-open dialog
+root = Tk()
 root.update()
 video_dir = tkFileDialog.askopenfilename(parent=root)
 # Directory with files that we want to transcode losslessly and generate metadata for
