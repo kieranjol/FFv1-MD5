@@ -7,9 +7,8 @@ from glob import glob
 import os
 from Tkinter import *
 import tkFileDialog
-
-# Create file-open dialog
 root = Tk()
+
 root.update()
 video_dir = tkFileDialog.askopenfilename(parent=root)
 # Directory with files that we want to transcode losslessly and generate metadata for
@@ -55,6 +54,8 @@ for filename in video_files: #Begin a loop for all .mov and .mp4 files.
 			'-g','1',              # Use intra-frame only aka ALL-I aka GOP=1
 			'-level','3',          # Use Version 3 of FFv1
 			'-c:a','copy',         # Copy and paste audio bitsream with no transcoding
+			'-map','0',
+			'-dn',
 			output,	
 			'-f','framemd5','-an'  # Create decoded md5 checksums for every frame of the input. -an ignores audio
 			, fmd5 ])
@@ -106,8 +107,8 @@ for filename in video_files: #Begin a loop for all .mov and .mp4 files.
 					"Mediainfo/File/track[@type='Video']", '-v', 'DisplayAspectRatio', 
 					outputxml ])
 
-    acodec_raw = subprocess.check_output(['MediaInfo', '--Language=raw', '--Full', '--inform=Audio;%Codec%', output ])                             # Only taking info from the first stream for now.
-    acodec = acodec_raw.replace('\n', '')
+    acodec_raw = subprocess.check_output(['MediaInfo', '--Language=raw', '--Full', '--inform=Audio;%Codec%\\n', output ])                             # Only taking info from the first stream for now.
+    acodec = acodec_raw.split('\n', 1)[0].replace('\n', '')
     
     
     duration_raw = subprocess.check_output(['MediaInfo', '--Language=raw', '--Full', '--inform=General;%Duration_String4%', output ])
