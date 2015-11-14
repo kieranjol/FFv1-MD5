@@ -88,7 +88,7 @@ for filename in video_files: #Begin a loop for all .mov and .mp4 files.
 							output ])         #output ffv1 file
 		fo.write(mediaxmloutput)
 	
-	# Parse through FFv1 xml and store values as variables to be reused later.
+	# Ok so initially i was chopping up the mediainfo xml, now I'm slowly moving towards extracting the info directly from the video via MI. WORK IN PROGRESSSSSS!!!.
     inmagicxml = outputxml + ".xml"
     vcodec = subprocess.check_output(['xml','sel', '-t', '-m',
 					"Mediainfo/File/track[@type='Video']", '-v', 'Codec', 
