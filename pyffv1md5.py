@@ -103,7 +103,7 @@ for filename in video_files: #Begin a loop for all .mov and .mp4 files.
 					"Mediainfo/File/track[@type='Video']", '-v', 'DisplayAspectRatio', 
 					outputxml ])
     #Multiple possible values, so newline is used, then only first line is extracted.
-    acodec = subprocess.check_output(['MediaInfo', '--Language=raw', '--Full', '--inform=Audio;%Codec%\\n', output ]).replace('\n', '')                           # Only taking info from the first stream for now.
+    acodec = subprocess.check_output(['MediaInfo', '--Language=raw', '--Full', '--inform=Audio;%Codec%\\n', output ]).split('\n', 1)[0].replace('\n', '')                    # Only taking info from the first stream for now.
 
     duration = subprocess.check_output(['MediaInfo', '--Language=raw', '--Full', '--inform=General;%Duration_String4%', output ]).replace('\n', '')
  
