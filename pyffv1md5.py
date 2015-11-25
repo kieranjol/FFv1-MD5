@@ -97,27 +97,22 @@ for filename in video_files: #Begin a loop for all .mov and .mp4 files.
 					"Mediainfo/File/track[@type='Video']", '-v', 'Width', 
 					outputxml ])
     
-    height_raw = subprocess.check_output(['MediaInfo', '--Language=raw', '--Full', '--inform=Video;%Height%', output ])
-    height = height_raw.replace('\n', '')
-    
+    height = subprocess.check_output(['MediaInfo', '--Language=raw', '--Full', '--inform=Video;%Height%', output ]).replace('\n', '')
+  
     DAR = subprocess.check_output(['xml','sel', '-t', '-m',
 					"Mediainfo/File/track[@type='Video']", '-v', 'DisplayAspectRatio', 
 					outputxml ])
     #Multiple possible values, so newline is used, then only first line is extracted.
-    acodec_raw = subprocess.check_output(['MediaInfo', '--Language=raw', '--Full', '--inform=Audio;%Codec%\\n', output ])                             # Only taking info from the first stream for now.
-    acodec = acodec_raw.split('\n', 1)[0].replace('\n', '')
-    
-    
-    duration_raw = subprocess.check_output(['MediaInfo', '--Language=raw', '--Full', '--inform=General;%Duration_String4%', output ])
-    duration = duration_raw.replace('\n', '')
+    acodec = subprocess.check_output(['MediaInfo', '--Language=raw', '--Full', '--inform=Audio;%Codec%\\n', output ]).replace('\n', '')                           # Only taking info from the first stream for now.
+
+    duration = subprocess.check_output(['MediaInfo', '--Language=raw', '--Full', '--inform=General;%Duration_String4%', output ]).replace('\n', '')
  
-    wrapper_raw = subprocess.check_output(['MediaInfo', '--Language=raw', '--Full', '--inform=General;%FileExtension%', output ])
-    wrapper = wrapper_raw.replace('\n', '')
+ 
+    wrapper = subprocess.check_output(['MediaInfo', '--Language=raw', '--Full', '--inform=General;%FileExtension%', output ]).replace('\n', '')
+    
     filesize = subprocess.check_output(['xml','sel', '-t', '-m', 
 					"Mediainfo/File/track[@type='General']", '-v', 'FileSize_String4',
 					outputxml ])
-
-
 
 	#Writes an inmagic DBTextworks compliant xml file usin ght values from the previous section.
     with open(inmagicxml, "w+") as fo:
